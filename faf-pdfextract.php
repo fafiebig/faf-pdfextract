@@ -17,21 +17,37 @@ defined('ABSPATH') or die('No direct script access allowed!');
  */
 function extractPdfContent($id)
 {
-    if (!`which pdftotext` || get_post_mime_type($id) !== 'application/pdf') {
+    if (wp_is_post_revision($id)){
         return;
-        //throw new Exception('Du benötigst pdftotext (poppler utils) auf deinem Server!');
     }
 
-    $file = get_attached_file($id);
-    if (is_file($file)) {
-        $txt = $file.'.txt';
+    if (get_post_mime_type($id) !== 'application/pdf') {
+        return;
+    }
 
-        system('pdftotext -layout '.$file.' '.$txt);
+    if (!`which pdftotext`) {
+        //return;
+        $content = 'Du benötigst pdftotext (poppler utils) auf deinem Server!';
+    } else {
+        $file = get_attached_file($id);
+        if (is_file($file)) {
+            $txt = $file . '.txt';
 
-        if (is_file($txt)) {
-            $content = file_get_contents($txt);
-            update_post_meta($id, 'content', $content);
+            system('pdftotext -layout ' . $file . ' ' . $txt);
+
+            if (is_file($txt)) {
+                $content = file_get_contents($txt);
+            }
         }
     }
+
+    $data                   = [];
+    $data['ID']             = $id;
+    $data['post_content']   = $content;
+
+    remove_action('edit_attachment', 'extractPdfContent');
+    wp_update_post($data);
+    add_action('edit_attachment', 'extractPdfContent');
 }
-add_action('save_post', 'extractPdfContent');
+add_action('edit_attachment', 'extractPdfContent', 10, 2);
+add_action('add_attachment', 'extractPdfContent', 10, 2);
