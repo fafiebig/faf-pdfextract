@@ -1,0 +1,26 @@
+{
+  "name": "fafiebig/faf-pdfextract",
+  "description": "Wordpress Plugin to extract PDF content (with pdftotext) and copy it into media content field",
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "pdf",
+    "pdftotext",
+    "search",
+    "content"
+  ],
+  "homepage": "https://github.com/fafiebig/faf-extract",
+  "license": "GNU GENERAL PUBLIC LICENSE",
+  "authors": [
+    {
+      "name": "F.A. Fiebig",
+      "email": "fafworx@gmail.com",
+      "homepage": "http://fafworx.com"
+    }
+  ],
+  "type": "wordpress-plugin",
+  "require": {
+    "php": ">=5.3.2",
+    "composer/installers": "v1.2.0"
+  }
+}
