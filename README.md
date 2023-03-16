@@ -1,3 +1,6 @@
+# DEPRECATED - DO NOT USE IT ANY LONGER!
+
+
 # faf-pdfextract
 
 Wordpress Plugin to extract PDF content (with pdftotext) and copy it into media content field
